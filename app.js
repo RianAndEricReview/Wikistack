@@ -3,6 +3,7 @@ const {urlencoded, json} = require('body-parser')
 const morgan = require('morgan')
 const nunjucks = require('nunjucks')
 const models = require('./models')
+const routes = require('./routes')
 
 const app = express()
 
@@ -17,12 +18,14 @@ app.use(json())
 
 app.use(express.static('public'))
 
+app.use('/', routes)
+
 app.use(function (err, req, res, next) {
   if (!err.stack || !err.message) next(err);
   res.status(err.status || 500).end();
 });
 
-models.db.sync()
+models.db.sync({force: false})
 .then(function () {
     // make sure to replace the name below with your express app
     app.listen(3000, function () {

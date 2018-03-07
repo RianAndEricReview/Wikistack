@@ -7,7 +7,14 @@ const Page = db.define('page', {
   title: { type: Sequelize.STRING, allowNull: false },
   urlTitle: { type: Sequelize.STRING },
   content: { type: Sequelize.TEXT },
-  status: { type: Sequelize.ENUM('open', 'closed'), allowNull: false }
+  status: { type: Sequelize.ENUM('open', 'closed')},
+  date: { type: Sequelize.DATE, defaultValue: Sequelize.NOW }
+}, {
+  getterMethods: {
+    route() {
+      return `/wiki/${this.getDataValue('urlTitle')}`
+    }
+  }
 })
 
 const User = db.define('user', {
@@ -16,7 +23,7 @@ const User = db.define('user', {
 })
 
 module.exports = {
-  Page: Page,
-  User: User,
-  db: db,
+  Page,
+  User,
+  db,
 }

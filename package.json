@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -e html,js,css /Users/rianhalperin/RianEricReview/Wikistack/app.js",
+    "start": "nodemon -e html,js,css app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
