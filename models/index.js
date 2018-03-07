@@ -22,6 +22,10 @@ const User = db.define('user', {
   email: { type: Sequelize.STRING, allowNull: false }
 })
 
+const makeURL = (title) => {
+  return title ? title.replace(/\s/g, '_').replace(/\W/g, '') : Math.random().toString(36).substring(2, 7);
+}
+
 module.exports = {
   Page,
   User,
