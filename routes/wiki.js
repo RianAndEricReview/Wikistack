@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   User.findOrCreate({
-    where: {name: req.body.name}
+    where: {name: req.body.name, email: req.body.email}
   })
   .spread((user, createdBool) => {
     let page = Page.build({
@@ -42,7 +42,8 @@ router.get('/:urlTitle', (req, res, next) => {
   Page.findOne({
     where: {
       urlTitle: req.params.urlTitle
-    }
+    },
+    include: [{model: User, as: 'author'}]
   })
   .then((foundPage) => {
     res.render('wikipage', {page: foundPage})
