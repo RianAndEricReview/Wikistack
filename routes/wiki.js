@@ -9,7 +9,8 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   let page = Page.build({
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    status: req.body.status,
   })
   page.save()
   res.redirect('/')
