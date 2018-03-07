@@ -32,7 +32,7 @@ const User = db.define('user', {
   email: { type: Sequelize.STRING, allowNull: false }
 })
 
-
+Page.belongsTo(User, { as: 'author' })
 
 module.exports = {
   Page,

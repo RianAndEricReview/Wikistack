@@ -3,19 +3,32 @@ const router = express.Router()
 const { Page, User } = require('../models')
 
 router.get('/', (req, res, next) => {
-  res.redirect('/')
+  Page.findAll({
+    attributes: ['title', 'urlTitle']
+  })
+  .then((foundPages) => {
+    res.render('index', {foundPages})
+  })
+  .catch(next)
 })
 
 router.post('/', (req, res, next) => {
-  let page = Page.build({
-    title: req.body.title,
-    content: req.body.content,
-    status: req.body.status,
+  User.findOrCreate({
+    where: {name: req.body.name}
   })
-  page.save()
-  .then((savedPage) => {
-    // res.json(resolve)
-    res.redirect(savedPage.route)
+  .spread((user, createdBool) => {
+    let page = Page.build({
+      title: req.body.title,
+      content: req.body.content,
+      status: req.body.status,
+    })
+    return page.save()
+    .then((savedPage) => {
+      return savedPage.setAuthor(user)
+    })
+  })
+  .then(page => {
+    res.redirect(page.route)
   })
   .catch((err) => console.error(err))
 })
