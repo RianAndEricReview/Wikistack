@@ -13,9 +13,9 @@ router.post('/', (req, res, next) => {
     status: req.body.status,
   })
   page.save()
-  .then((resolve) => {
+  .then((savedPage) => {
     // res.json(resolve)
-    res.redirect(`/wiki/${page.urlTitle}`)
+    res.redirect(savedPage.route)
   })
   .catch((err) => console.error(err))
 })
@@ -32,7 +32,7 @@ router.get('/:urlTitle', (req, res, next) => {
     }
   })
   .then((foundPage) => {
-    res.json(foundPage)
+    res.render('wikipage', {page: foundPage})
   })
   .catch((err) => console.error(err))
 })
