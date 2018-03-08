@@ -36,6 +36,17 @@ const Page = db.define('page', {
   }
 })
 
+Page.findByTag = function (tagName){
+  const Op = Sequelize.Op
+  return Page.findAll({
+    where: {
+        tags: {
+            [Op.contains]: [tagName]
+        }
+    }
+  })
+}
+
 const User = db.define('user', {
   name: { type: Sequelize.STRING, allowNull: false },
   email: { type: Sequelize.STRING, allowNull: false }

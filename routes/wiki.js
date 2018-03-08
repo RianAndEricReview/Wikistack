@@ -32,6 +32,14 @@ router.get('/add', (req, res, next) => {
   res.render('addpage')
 })
 
+router.get('/search', (req, res, next) => {
+  console.log('SEARCHHHHH', req.query.searchTag)
+  Page.findByTag(req.query.searchTag)
+  .then(foundPages => {
+    res.render('index', {foundPages})
+  })
+})
+
 router.get('/:urlTitle', (req, res, next) => {
   // res.send('this is the url: ' + req.params.urlTitle)
   Page.findOne({
