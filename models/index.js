@@ -1,3 +1,4 @@
+const marked = require('marked')
 const Sequelize = require('sequelize')
 const db = new Sequelize('postgres://localhost:5432/wikistack', {
   logging: false
@@ -18,6 +19,9 @@ const Page = db.define('page', {
   getterMethods: {
     route() {
       return `/wiki/${this.getDataValue('urlTitle')}`
+    },
+    renderedContent() {
+      return marked(this.content)
     }
   },
   setterMethods: {

@@ -4,12 +4,15 @@ const morgan = require('morgan')
 const nunjucks = require('nunjucks')
 const models = require('./models')
 const routes = require('./routes')
+const AutoEscapeExtension = require('nunjucks-autoescape')(nunjucks);
 
 const app = express()
 
 app.set('view engine', 'html')
 app.engine('html', nunjucks.render)
-nunjucks.configure('views', {noCache: true})
+
+const env = nunjucks.configure('views', {noCache: true})
+env.addExtension('AutoEscapeExtension', new AutoEscapeExtension(env));
 
 app.use(morgan('dev'))
 
