@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h3>{{page.title}} <small> (<a href="PLACEHOLDER_URL_TITLE/similar">Similar</a>)</small></h3>
+  <h3>{{page.title}} <small> (<a href="{{page.route}}/similar">Similar</a>)</small></h3>
   <ul class="list-unstyled">
     {% for tag in page.tags %}
       <li>{{tag}}</li>

@@ -47,6 +47,18 @@ Page.findByTag = function (tagName){
   })
 }
 
+Page.prototype.findSimilar = function (tagsArr){
+  const Op = Sequelize.Op
+  return Page.findAll({
+    where: {
+      tags: {
+        [Op.overlap]: [this.tags, tagsArr],
+        [Op.ne]: this.id
+      }
+    }
+  })
+}
+
 const User = db.define('user', {
   name: { type: Sequelize.STRING, allowNull: false },
   email: { type: Sequelize.STRING, allowNull: false }
