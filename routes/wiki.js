@@ -17,12 +17,7 @@ router.post('/', (req, res, next) => {
     where: {name: req.body.name, email: req.body.email}
   })
   .spread((user, createdBool) => {
-    let page = Page.build({
-      title: req.body.title,
-      content: req.body.content,
-      status: req.body.status,
-    })
-    return page.save()
+    return Page.create(req.body)
     .then((savedPage) => {
       return savedPage.setAuthor(user)
     })
@@ -46,7 +41,7 @@ router.get('/:urlTitle', (req, res, next) => {
     include: [{model: User, as: 'author'}]
   })
   .then((foundPage) => {
-    res.render('wikipage', {page: foundPage})
+    res.render('wikipage', {page: foundPage, tags: foundPage.tags})
   })
   .catch((err) => console.error(err))
 })

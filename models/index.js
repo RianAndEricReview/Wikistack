@@ -11,13 +11,22 @@ const Page = db.define('page', {
   title: { type: Sequelize.STRING, allowNull: true },
   urlTitle: { type: Sequelize.STRING, allowNull: false },
   content: { type: Sequelize.TEXT },
-  status: { type: Sequelize.ENUM('open', 'closed')},
-  date: { type: Sequelize.DATE, defaultValue: Sequelize.NOW }
+  status: { type: Sequelize.ENUM('open', 'closed') },
+  date: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
+  tags: { type: Sequelize.ARRAY(Sequelize.STRING) },
 }, {
   getterMethods: {
     route() {
       return `/wiki/${this.getDataValue('urlTitle')}`
     }
+  },
+  setterMethods: {
+    tags(value) {
+      let tagArr = value.split(',').map((tag) => {
+        return tag.trim()
+      })
+      this.setDataValue('tags', tagArr)
+    },
   },
   hooks: {
     beforeValidate: (page) => {
