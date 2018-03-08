@@ -47,12 +47,14 @@ Page.findByTag = function (tagName){
   })
 }
 
-Page.prototype.findSimilar = function (tagsArr){
+Page.prototype.findSimilar = function (){
   const Op = Sequelize.Op
   return Page.findAll({
     where: {
       tags: {
-        [Op.overlap]: [this.tags, tagsArr],
+        [Op.overlap]: this.tags
+      },
+      id: {
         [Op.ne]: this.id
       }
     }

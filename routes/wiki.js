@@ -54,4 +54,20 @@ router.get('/:urlTitle', (req, res, next) => {
   .catch((err) => console.error(err))
 })
 
+router.get('/:urlTitle/similar', (req, res, next) => {
+  Page.findOne({
+    where: {
+      urlTitle: req.params.urlTitle
+    },
+    //can be removed if we don't allowing editing of author
+    include: [{model: User, as: 'author'}]
+  })
+  .then((foundPage) => {
+    return foundPage.findSimilar()
+    .then((similarPages)=>{
+      res.render('index', {foundPages: similarPages})
+    })
+  })
+})
+
 module.exports = router
