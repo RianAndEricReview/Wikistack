@@ -2,6 +2,11 @@
 
 {% block content %}
   <h3>{{page.title}} <small> (<a href="PLACEHOLDER_URL_TITLE/similar">Similar</a>)</small></h3>
+  <ul class="list-unstyled">
+    {% for tag in page.tags %}
+      <li>{{tag}}</li>
+    {% endfor %}
+  </ul>
   <h4>by <a href="/user/{{page.authorId}}">{{page.author.name}}</a></h4>
   <div>PLACEHOLDER TAG LIST</div>
   <hr/>
