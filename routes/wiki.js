@@ -25,7 +25,21 @@ router.post('/', (req, res, next) => {
   .then(page => {
     res.redirect(page.route)
   })
-  .catch((err) => console.error(err))
+  .catch(next)
+})
+
+router.post('/:urlTitle', (req, res, next) => {
+  console.log('IN THE PUTTTTTTTT')
+  Page.update(req.body, {
+    where: {
+      urlTitle: req.params.urlTitle
+    },
+    // include: [{model: User, as: 'author'}],
+    returning: true
+  })
+  .then((effectedArray) => {
+    res.redirect(effectedArray[1][0].route)
+  })
 })
 
 router.get('/add', (req, res, next) => {
@@ -33,15 +47,14 @@ router.get('/add', (req, res, next) => {
 })
 
 router.get('/search', (req, res, next) => {
-  console.log('SEARCHHHHH', req.query.searchTag)
   Page.findByTag(req.query.searchTag)
   .then(foundPages => {
     res.render('index', {foundPages})
   })
+  .catch(next)
 })
 
 router.get('/:urlTitle', (req, res, next) => {
-  // res.send('this is the url: ' + req.params.urlTitle)
   Page.findOne({
     where: {
       urlTitle: req.params.urlTitle
@@ -51,7 +64,7 @@ router.get('/:urlTitle', (req, res, next) => {
   .then((foundPage) => {
     res.render('wikipage', {page: foundPage, tags: foundPage.tags})
   })
-  .catch((err) => console.error(err))
+  .catch(next)
 })
 
 router.get('/:urlTitle/similar', (req, res, next) => {
@@ -64,10 +77,25 @@ router.get('/:urlTitle/similar', (req, res, next) => {
   })
   .then((foundPage) => {
     return foundPage.findSimilar()
-    .then((similarPages)=>{
+    .then((similarPages) => {
       res.render('index', {foundPages: similarPages})
     })
   })
+  .catch(next)
 })
+
+router.get('/:urlTitle/edit', (req, res, next) => {
+  Page.findOne({
+    where: {
+      urlTitle: req.params.urlTitle
+    },
+    include: [{model: User, as: 'author'}]
+  })
+  .then((page) => {
+    res.render('editpage', {page})
+  })
+  .catch(next)
+})
+
 
 module.exports = router
