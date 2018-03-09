@@ -14,5 +14,5 @@
   <div class="page-body">{% autoescape false %}{{ page.renderedContent }}{% endautoescape %}</div>
   <hr/>
   <a href="{{page.route}}/edit" class="btn btn-primary">edit this page</a>
-  <a href="PLACEHOLDER_URL_TITLE/delete" class="btn btn-danger">delete this page</a>
+  <a href="{{page.route}}/delete" class="btn btn-danger">delete this page</a>
 {% endblock %}

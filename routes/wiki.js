@@ -97,5 +97,20 @@ router.get('/:urlTitle/edit', (req, res, next) => {
   .catch(next)
 })
 
+router.get('/:urlTitle/delete', (req, res, next) => {
+  console.log('DELLLEEETETE')
+  Page.findOne({
+    where: {
+      urlTitle: req.params.urlTitle
+    }
+  })
+  .then((page) => {
+    return page.destroy()
+  })
+  .then(() => {
+    res.redirect('/')
+  })
+  .catch(next)
+})
 
 module.exports = router
